@@ -1,0 +1,7 @@
+<resources>
+    <!--<string name="app_name">মূল্য অনুসন্ধান যন্ত্র</string>-->
+    <string name="app_name">মূল্য অনুমান যন্ত্র</string>
+    <string name="org_name">" জয় কিষান \n স্বরাজ অভিযান \n বাংলা প্রদেশ"</string>
+    <string name="start_text">Material is the metaphor.</string>
+    <string name="action_settings">Settings</string>
+</resources>

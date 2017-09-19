@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="app_bar_height">60dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="title_size">25dp</dimen>
+    <dimen name="byline_size">15dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+</resources>
