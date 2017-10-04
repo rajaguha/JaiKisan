@@ -67,10 +67,10 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_weight="1"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_weight="1"/>-->
 
     <!--<include layout="@layout/content_msg_log" />-->
     <ListView

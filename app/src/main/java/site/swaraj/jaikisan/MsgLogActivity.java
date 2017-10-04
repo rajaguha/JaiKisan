@@ -32,7 +32,7 @@ public class MsgLogActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final Context ctx = this;
 
-//  TODO - improve to https://www.raywenderlich.com/124438/android-listview-tutorial
+//  TODO - beautify entries https://www.raywenderlich.com/124438/android-listview-tutorial
 //        SwarajApp.setLstVu( lv );
 //        class LVAdapter<T> extends ArrayAdapter<T> {
 //            LVAdapter(List list) { super( ctx, R.layout.list_item, list ); }
@@ -55,12 +55,13 @@ public class MsgLogActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, list);
         lv.setAdapter( adapter );
 
+        // TODO register in onResume(), unregister in onPause()
         registerReceiver(new BroadcastReceiver(){
             @Override
             public void onReceive(Context ctx, Intent in) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        list.add( 0, "SENT: " + in.getStringExtra("msg") );
+                        list.add( 0, "RCVD: " + in.getStringExtra("msg") + "\nfrom " + in.getStringExtra("cid") );
                         break;
                     default:
                         list.add( 0, "SERR: " + getResultCode() );
@@ -68,7 +69,7 @@ public class MsgLogActivity extends AppCompatActivity {
                 }
                 if ( list.size() > (lstLen*2)) list.remove((lstLen*2)-1);
                 adapter.notifyDataSetChanged();
-                Log.d(TAG,"SENT: " + list.size() + " : " + adapter.getCount() );
+//                Log.d(TAG,"SENT: " + list.size() + " : " + adapter.getCount() );
             }
         }, new IntentFilter(SmsService.SMS_SENT));
 
@@ -77,7 +78,7 @@ public class MsgLogActivity extends AppCompatActivity {
             public void onReceive(Context ctx, Intent in) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        list.add( 0, "DLVR:" + in.getStringExtra("msg") );
+                        list.add( 0, "DLVR:" + in.getStringExtra("out") + "\nto " + in.getStringExtra("cid") );
                         break;
                     default:
                         list.add( 0, "DERR: " + getResultCode() );
@@ -85,9 +86,9 @@ public class MsgLogActivity extends AppCompatActivity {
                 }
                 if ( list.size() > lstLen) list.remove(lstLen-1);
                 adapter.notifyDataSetChanged();
-                Log.d(TAG,"DLVR: " + list.size() );
+//                Log.d(TAG,"DLVR: " + list.size() );
             }
-        }, new IntentFilter(SmsService.SMS_DELIVERED));
+        }, new IntentFilter(SmsService.SMS_DLVR));
 
 
 
