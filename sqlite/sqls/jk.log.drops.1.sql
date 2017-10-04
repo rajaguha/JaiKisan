@@ -1,0 +1,33 @@
+-- START
+PRAGMA foreign_keys = ON;
+-- STOP
+-- START
+DROP TRIGGER IF EXISTS bsnl_sms_recharge_upd;
+-- STOP
+-- START
+DROP TABLE IF EXISTS bsnl_sms_recharge;
+-- STOP
+-- START
+DROP TABLE IF EXISTS bsnl_sms_rate;
+-- STOP
+-- START
+DROP VIEW IF EXISTS err_msg;
+-- STOP
+-- START
+DROP TABLE IF EXISTS err_log;
+-- STOP
+-- START
+DROP TRIGGER IF EXISTS msg_log_del;
+-- STOP
+-- START
+DROP TABLE IF EXISTS msg_log;
+-- STOP
+-- START
+DROP VIEW IF EXISTS bad_num;
+-- STOP
+-- START
+DROP TRIGGER IF EXISTS bad_number_upd;
+-- STOP
+-- START
+DROP TABLE IF EXISTS bad_number;
+-- STOP

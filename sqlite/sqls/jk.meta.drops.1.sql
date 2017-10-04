@@ -1,0 +1,63 @@
+-- START
+PRAGMA foreign_keys = ON;
+-- STOP
+-- START
+DROP VIEW IF EXISTS std_name;
+-- STOP
+-- START
+DROP VIEW IF EXISTS conv;
+-- STOP
+-- START
+DROP VIEW IF EXISTS sub_item;
+-- STOP
+-- START
+DROP VIEW IF EXISTS item;
+-- STOP
+-- START
+DROP VIEW IF EXISTS quality;
+-- STOP
+-- START
+DROP VIEW IF EXISTS unit;
+-- STOP
+-- START
+DROP VIEW IF EXISTS command;
+-- STOP
+-- START
+DROP TABLE IF EXISTS translat;
+-- STOP
+-- START
+DROP TABLE IF EXISTS qual_alias;
+-- STOP
+-- START
+DROP TABLE IF EXISTS qual_std;
+-- STOP
+-- START
+DROP TABLE IF EXISTS sub_item_alias;
+-- STOP
+-- START
+DROP TABLE IF EXISTS sub_item_std;
+-- STOP
+-- START
+DROP TABLE IF EXISTS item_alias;
+-- STOP
+-- START
+DROP TABLE IF EXISTS item_std;
+-- STOP
+-- START
+DROP TABLE IF EXISTS unit_alias;
+-- STOP
+-- START
+DROP TABLE IF EXISTS unit_std;
+-- STOP
+-- START
+DROP TABLE IF EXISTS unit_si_std;
+-- STOP
+-- START
+DROP TABLE IF EXISTS cmd_alias;
+-- STOP
+-- START
+DROP TABLE IF EXISTS cmd_std;
+-- STOP
+-- START
+DROP TABLE IF EXISTS pin2lang;
+-- STOP
