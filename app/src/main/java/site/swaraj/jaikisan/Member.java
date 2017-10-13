@@ -1,13 +1,14 @@
 package site.swaraj.jaikisan;
 
 import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by rajag on 2017-10-02.
  */
+
+// TODO - record service center address for member to identify sending mobile provider
+// TODO - update last_msg, last_msg_ts, etc. for returning members
 
 class Member {
     static final String TAG = "JK:Member:";

@@ -6,24 +6,30 @@ CREATE TABLE member (
      cid CHAR(13) UNIQUE ON CONFLICT ROLLBACK CHECK ( cid GLOB '+91[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' ) NOT NULL 
    , pin CHAR(6) CHECK ( pin GLOB '[0-9][0-9][0-9][0-9][0-9][0-9]' )
    , lang CHAR(5) CHECK ( lang IN ('bn_bn','bn_EN','hi_hi','hi_EN','en_En') )
-   , type TEXT CHECK (type IN ('PRODUCER', 'BUYER') )
+   , type TEXT CHECK ( type IN ('PRODUCER', 'BUYER') )
    , name TEXT
    , dob DATE
    , ano CHAR(14) UNIQUE ON CONFLICT ROLLBACK CHECK (ano GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]' )
    , upi TEXT UNIQUE CHECK ( upi LIKE '%_@_%' ) UNIQUE ON CONFLICT ROLLBACK
    , p_type CHAR(5) CHECK ( p_type IN ('OWNER', 'LEASE', 'LABOR') )
-   , p_acres REAL CHECK ( p_acres > 0 AND p_acres < 100 )
+   , p_acres REAL CHECK ( p_acres < 100 )
    , p_hh_size INTEGER CHECK ( p_hh_size > 0 AND p_hh_size < 25 )
    , b_type TEXT CHECK ( b_type IN ('SPECULATOR', 'WHOLESALER', 'RETAILER', 'CONSUMER') ) 
    , b_qty REAL 
    , ref CHAR(13) REFERENCES member(cid) DEFERRABLE INITIALLY DEFERRED  NOT NULL
-   , flags BYTE NOT NULL
+   , flags SHORT NOT NULL
    , state TEXT CHECK ( state IN ('RECORDED', 'ENROLED', 'SUSPENDED', 'CANCELED')) NOT NULL
    , msgC INTEGER NOT NULL
    , last_msg DATE NOT NULL
-   , _insert_at INTEGER DEFAULT CURRENT_TIMESTAMP NOT NULL
+   , _insert_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
    , _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
 );
+-- STOP
+-- START
+-- INSERT INTO member(cid, pin, lang, type, name, dob, ano, upi, p_type, p_acres, p_hh_size, b_type
+--   , b_qty, ref, flags, state, msgC, last_msg ) VALUES ('+910000000000', '999350', 'bn_bn', 'BUYER'
+--   , 'Pahela Swaraji', '15/08/1960', '0000-0000-0000-0000', '0000000000@upi', null, null, null
+--   , 'CONSUMER', 2500, '+910000000000', 0x3FFF, 'ENROLED', 0, '15/08/2017', '15/08/2017 00:00:00' )
 -- STOP
 -- START
 CREATE TABLE query (

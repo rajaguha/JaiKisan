@@ -5,32 +5,21 @@
 
 package site.swaraj.jaikisan;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
-import android.app.Activity;
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static android.os.SystemClock.sleep;
 
 /**
  * loads SMS into db
@@ -54,14 +43,16 @@ public class SmsService extends IntentService {
         String cid;
         String msg;
         Long mts;
+        String sca;
         Long rts = new Date().getTime();
         Long rid;
         String out;
         Boolean send;
-        Reply( String cid, String msg, Long mts ) {
+        Reply( String cid, String msg, Long mts, String sca ) {
             this.cid = cid;
             this.msg = msg;
             this.mts = mts;
+            this.sca = sca;
         }
         @Override public String toString() {
             StringBuffer str = new StringBuffer("Reply::");
@@ -113,22 +104,41 @@ public class SmsService extends IntentService {
         }
         Log.d(TAG, "<<< onHandleIntent():" );
     }
+//    private HashMap<String, String> parseSMS(StringBuilder msg) {
+//
+//    }
     private Reply processSMS( SmsMessage sms ) {
-        Log.d(TAG, "processSMS(): >>>" );
+        Log.d(TAG, "processSMS(): <<<" );
+//        _dumpSMStoLogV( sms );
         Reply reply = new Reply(
                   sms.getOriginatingAddress()
                 , sms.getMessageBody()
                 , sms.getTimestampMillis()
+                , sms.getServiceCenterAddress()
         );
         reply.rid = log.insMsg( reply );
         Member mmbr = new Member( reply );
 //        Log.d(TAG, "MEMBER: " + mmbr.toString() );
 //        HashMap<String, HashMap<String, Bit>> bits = parseSMS( new StringBuilder(reply.msg) );
+/***********************
+ * OFFER: BUY|SELL Item(main#sub#qual) Qty Date Price [Pin]
+ * OFFER: 1#2#3 #100 120*00 12/12/2017 999350
+ * OFFER: 1#2#3 *100 120* [999350]
+ *
+ * QUERY: Item(main#[sub#][qual#]
+ * QUERY: ALOO#JYOTI#PRIME  [700038]
+ * QUERY: ALOO#JYOTI# [700038]
+ * QUERY: ALOO# [700038]
 
+ * number with #|* in front is BUY|SELL QTY DO WHAT? H
+ * thing w/ # at end or middle is ITEM      WHAT?
+ * number with * at end or middle is PRICE  HOW MUCH?
+ * number w/ 6 digits is PIN
+ * ***********************/
 //      String OUT = "স্বরাজ অভিযান জয় কিষান আন্দোলনের গ্রামীন পদার্থর মূল্য অনুমান যন্ত্রে আপনার স্বাগতম।\n"
 //            + "এই প্রকল্পের দৈনিক উন্নত করা হচ্ছে। নতুন বৈশিষ্ট্য দেখতে পুনরায় বার্তা পাঠান।";
         String OUT = "Welcome 12345 67890, to the Kisan Swaraj Project.  " +
-                "It is presently in development.  Your ID No. is " + mmbr.mmbr.get("_id") +
+                "It is presently in development.  Your ID No. is " + mmbr.mmbr.get("_id").val +
                 ".\n\nSend CANCEL to quit."
                 ;
         if ( Pattern.matches("^\\+91\\d{10}$", reply.cid) ) {           // real deal
@@ -160,12 +170,12 @@ public class SmsService extends IntentService {
         }
         Log.i(TAG, "\tprocessSMS(): " + reply.out);
         log.updMsg( reply );
-        Log.d(TAG, "processSMS(): <<<" );
+        Log.d(TAG, "processSMS(): >>>" );
         return reply;
     }
     private void sendSMS(final Reply reply) {
         // see <https://mobiforge.com/design-development/sms-messaging-android>
-        Log.d( TAG, "sendSMS(): >>>" );
+        Log.d( TAG, "sendSMS(): <<<" );
         ArrayList<String> parts = smsMgr.divideMessage(reply.out);
         Log.d( TAG, "sendSMS(): msg: length " + reply.out.length() + "; parts " + parts.size() );
         ArrayList<PendingIntent> sendPIs = new ArrayList<>(parts.size());
@@ -194,49 +204,49 @@ public class SmsService extends IntentService {
 //        Log.i(TAG, "\tsendSMS():queued reply to " + reply.cid );
         Log.d(TAG, "sendSMS(): >>>" );
     }
+    private void _dumpSMStoLogV( SmsMessage sms ) {
+        Log.d(TAG, "_dumpSMStoLogV(): <<<" );
+        HashMap<String, Object> thm = new HashMap<>(25);
+        thm.put( "DisplayMessageBody", sms.getDisplayMessageBody() );
+        thm.put( "DisplayOriginatingAddress", sms.getDisplayOriginatingAddress() );
+
+        thm.put( "MessageBody", sms.getMessageBody() );
+        thm.put( "OriginatingAddress", sms.getOriginatingAddress() );
+        thm.put( "TimestampMillis", sms.getTimestampMillis() );
+
+        thm.put( "EmailBody", sms.getEmailBody() );
+        thm.put( "EmailFrom", sms.getEmailFrom() );
+        thm.put( "IndexOnIcc", sms.getIndexOnIcc() );
+        thm.put( "MessageClass", sms.getMessageClass() );
+        thm.put( "Pdu", sms.getPdu() );
+        thm.put( "ProtocolIdentifier", sms.getProtocolIdentifier() );
+        thm.put( "PseudoSubject", sms.getPseudoSubject() );
+        thm.put( "ServiceCenterAddress", sms.getServiceCenterAddress() );
+        thm.put( "Status", sms.getStatus() );
+        thm.put( "StatusOnIcc", sms.getStatusOnIcc() );
+//        thm.put( "TPLayerLengthForPDU", sms.getTPLayerLengthForPDU( new String(sms.getPdu()) ) );
+        thm.put( "UserData", sms.getUserData() );
+        thm.put( "CphsMwiMessage", sms.isCphsMwiMessage() );
+        thm.put( "isEmail", sms.isEmail() );
+        thm.put( "isMWIClearMessage", sms.isMWIClearMessage() );
+        thm.put( "isMWISetMessage", sms.isMWISetMessage() );
+        thm.put( "isMwiDontStore", sms.isMwiDontStore() );
+        thm.put( "isReplace", sms.isReplace() );
+        thm.put( "isReplyPathPresent", sms.isReplyPathPresent() );
+        thm.put( "isStatusReportMessage", sms.isStatusReportMessage() );
+        for ( String key : thm.keySet() ) {
+            try {
+                Log.v(TAG, "processSMS(): " + key + " => " + thm.get(key).toString()
+                        + " isa " + thm.get(key).getClass().getName());
+            } catch ( Exception e ) {
+                Log.e( TAG, "processSMS(): " + key + " => " + e.getMessage() );
+//                        + " isa " + thm.get(key).getClass().getName() );
+            }
+        }
+        Log.d(TAG, "_dumpSMStoLogV(): >>>" );
+    }
 }
 /*********************************
- private void _dumpSMStoLogV( SmsMessage sms ) {
- Log.d(TAG, ">>> _dumpSMStoLogV(): " );
- HashMap<String, Object> thm = new HashMap<>(25);
- thm.put( "DisplayMessageBody", sms.getDisplayMessageBody() );
- thm.put( "DisplayOriginatingAddress", sms.getDisplayOriginatingAddress() );
-
- thm.put( "MessageBody", sms.getMessageBody() );
- thm.put( "OriginatingAddress", sms.getOriginatingAddress() );
- thm.put( "TimestampMillis", sms.getTimestampMillis() );
-
- thm.put( "EmailBody", sms.getEmailBody() );
- thm.put( "EmailFrom", sms.getEmailFrom() );
- thm.put( "IndexOnIcc", sms.getIndexOnIcc() );
- thm.put( "MessageClass", sms.getMessageClass() );
- thm.put( "Pdu", sms.getPdu() );
- thm.put( "ProtocolIdentifier", sms.getProtocolIdentifier() );
- thm.put( "PseudoSubject", sms.getPseudoSubject() );
- thm.put( "ServiceCenterAddress", sms.getServiceCenterAddress() );
- thm.put( "Status", sms.getStatus() );
- thm.put( "StatusOnIcc", sms.getStatusOnIcc() );
- thm.put( "TPLayerLengthForPDU", sms.getTPLayerLengthForPDU( new String(sms.getPdu()) ) );
- thm.put( "UserData", sms.getUserData() );
- thm.put( "CphsMwiMessage", sms. isCphsMwiMessage() );
- thm.put( "isEmail", sms. isEmail() );
- thm.put( "isMWIClearMessage", sms. isMWIClearMessage() );
- thm.put( "isMWISetMessage", sms. isMWISetMessage() );
- thm.put( "isMwiDontStore", sms. isMwiDontStore() );
- thm.put( "isReplace", sms. isReplace() );
- thm.put( "isReplyPathPresent", sms. isReplyPathPresent() );
- thm.put( "isStatusReportMessage", sms. isStatusReportMessage() );
- for ( String key : thm.keySet() ) {
- try {
- Log.v(TAG, "processSMS(): " + key + " => " + thm.get(key).toString()
- + " isa " + thm.get(key).getClass().getName());
- } catch ( Exception e ) {
- Log.e( TAG, "processSMS(): " + key + " => " + e.getMessage()
- + " isa " + thm.get(key).getClass().getName() );
- }
- }
- Log.d(TAG, "<<< _dumpSMStoLogV(): " );
- }
  @TargetApi(16) @SuppressLint("NewApi") private void _fromIntent( Intent  in ) {
  Log.d(TAG, ">>> _fromIntent(): " );
  final Bundle b = in.getExtras();

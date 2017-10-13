@@ -56,16 +56,16 @@ public class SwarajApp extends Application {
 //        mos = mos.substring( 0, mos.length() - 2 );       // set at declaration
 
         // TODO - generate parts of regex strings from the db - aliases, etc.
-//        ptrnStrs.put( "pin", "\\b (\\d{3}) (?:[-.]|\\s{1,3})? (\\d{3}) \\b");
-//        ptrnStrs.put( "aadhaar", "\\b (\\d{4}) (?: (?:[-.]|\\s{1,3})? (\\d{4}) ){2} \\b" );
-//        ptrnStrs.put( "upi", "\\b ( [-._A-Z0-9\\u0900-\\u09FF]+ @ [-._A-Z0-9\\u0900-\\u09FF]+ ) \\b" );
-//        ptrnStrs.put( "phone", "\\b (\\d{5}) (?:[-.]|\\s{1,3})? (\\d{5}) \\b" );
-//        ptrnStrs.put( "name", "\\b ( ([A-Z\\u0900-\\u09FF]+) (?:\\s{1,3}([A-Z\\u0900-\\u09FF]+)){1,3} ) \\b" );
-//        ptrnStrs.put( "family", "\\b (\\d{1,2}) \\b" );
-//        ptrnStrs.put( "lang", "\\b ( " +
-//                "বাংলা | bn_bn | BANGLA | bn_EN | " +
-//                "हिन्दी | hi_hi | HINDI | hi_EN | " +
-//                "English | en_En ) \\b" );
+        ptrnStrs.put( "pin", "\\b (\\d{3}) (?:[-.]|\\s{1,3})? (\\d{3}) \\b");
+        ptrnStrs.put( "aadhaar", "\\b (\\d{4}) (?: (?:[-.]|\\s{1,3})? (\\d{4}) ){2} \\b" );
+        ptrnStrs.put( "upi", "\\b ( [-._A-Z0-9\\u0900-\\u09FF]+ @ [-._A-Z0-9\\u0900-\\u09FF]+ ) \\b" );
+        ptrnStrs.put( "phone", "\\b (\\d{5}) (?:[-.]|\\s{1,3})? (\\d{5}) \\b" );
+        ptrnStrs.put( "name", "\\b ( ([A-Z\\u0900-\\u09FF]+) (?:\\s{1,3}([A-Z\\u0900-\\u09FF]+)){1,3} ) \\b" );
+        ptrnStrs.put( "family", "\\b (\\d{1,2}) \\b" );
+        ptrnStrs.put( "lang", "\\b ( " +
+                "বাংলা | bn_bn | BANGLA | bn_EN | " +
+                "हिन्दी | hi_hi | HINDI | hi_EN | " +
+                "English | en_En ) \\b" );
 //        ptrnStrs.put( "trade", "\\b ( " +
 //                "BUY | \\# | \\+ | " +                        // 'B' is for bechna/becha i.e. SELL
 //                "ক্রয় | ক্র | কেনা | কে | ক | KENA | KE | K |" +
